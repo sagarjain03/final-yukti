@@ -1,7 +1,7 @@
-import { ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { store } from '@/store';
-import { useAppSelector } from '@/store';
+import { store, useAppSelector, useAppDispatch } from '@/store';
+import { getCurrentUser } from '@/store/auth.slice';
 
 interface ProvidersProps {
     children: ReactNode;
@@ -20,9 +20,28 @@ function ThemeProvider({ children }: { children: ReactNode }) {
     return <>{children}</>;
 }
 
+// Auth provider to restore session on startup
+function AuthProvider({ children }: { children: ReactNode }) {
+    const dispatch = useAppDispatch();
+    const { token, user } = useAppSelector((state) => state.auth);
+
+    useEffect(() => {
+        // If token exists but user is null, restore session
+        if (token && !user) {
+            dispatch(getCurrentUser());
+        }
+    }, [dispatch, token, user]);
+
+    return <>{children}</>;
+}
+
 // Inner providers that need Redux
 function InnerProviders({ children }: ProvidersProps) {
-    return <ThemeProvider>{children}</ThemeProvider>;
+    return (
+        <ThemeProvider>
+            <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
+    );
 }
 
 // Main providers wrapper

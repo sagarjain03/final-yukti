@@ -10,6 +10,7 @@ import { GlobalNavigation } from '@/components/layout/GlobalNavigation';
 import { FilterBar } from '@/components/ui/AnimatedTabs';
 import { ArenaGrid, LiveActivityStrip, CreateArenaSheet } from '@/components/lobby';
 import type { ArenaRoom, ArenaFormData } from '@/components/lobby';
+import { useAuth } from '@/hooks';
 
 // Mock rooms data with enhanced fields
 const publicRooms: ArenaRoom[] = [
@@ -21,8 +22,8 @@ const publicRooms: ArenaRoom[] = [
     { id: '6', name: 'Pro League', host: 'EliteHacker', players: 3, maxPlayers: 4, type: 'squad', status: 'almost', difficulty: 'hard' },
 ];
 
-// Mock user ELO for skill matching
-const userELO = 1500;
+// Mock user ELO for skill matching (fallback, will use real user ELO from auth)
+const DEFAULT_ELO = 1200;
 const eloRange = 200;
 
 // Mock ELO values for rooms (would come from API)
@@ -37,6 +38,8 @@ const roomELOs: Record<string, number> = {
 
 export function Lobby() {
     const navigate = useNavigate();
+    const { user } = useAuth();
+    const userELO = user?.elo || DEFAULT_ELO;
 
     // Filter states with defaults: Open + Near My ELO
     const [modeFilter, setModeFilter] = useState('all');

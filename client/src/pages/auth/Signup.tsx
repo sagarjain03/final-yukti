@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Swords, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Swords, Mail, Lock, User, Eye, EyeOff, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
@@ -17,6 +17,7 @@ export function Signup() {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
+        college: '',
         password: '',
         confirmPassword: '',
     });
@@ -41,6 +42,7 @@ export function Signup() {
             username: formData.username,
             email: formData.email,
             password: formData.password,
+            college: formData.college || undefined,
         });
 
         if (result.meta.requestStatus === 'fulfilled') {
@@ -116,6 +118,17 @@ export function Signup() {
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     className="pl-10"
                                     required
+                                />
+                            </div>
+
+                            <div className="relative">
+                                <GraduationCap className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                                <Input
+                                    type="text"
+                                    placeholder="College (optional)"
+                                    value={formData.college}
+                                    onChange={(e) => setFormData({ ...formData, college: e.target.value })}
+                                    className="pl-10"
                                 />
                             </div>
 

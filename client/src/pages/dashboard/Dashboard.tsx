@@ -74,8 +74,8 @@ const stats = [
 
 export function Dashboard() {
     const { user } = useAuth();
-    const currentElo = 1450;
-    const targetElo = 1500;
+    const currentElo = user?.elo || 1200;
+    const targetElo = Math.ceil((currentElo + 100) / 100) * 100; // Next round hundred
 
     return (
         <div className="min-h-screen bg-background relative overflow-hidden">

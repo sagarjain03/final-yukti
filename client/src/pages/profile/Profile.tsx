@@ -12,59 +12,7 @@ import {
     BattleCard,
     AchievementBadge,
 } from '@/components/profile';
-
-// Mock profile data
-const mockProfile = {
-    username: 'CodeWarrior',
-    email: 'codewarrior@example.com',
-    tagline: 'Competitive Programmer · DSA Grinder',
-    bio: 'Competitive programmer | DSA enthusiast | Building cool stuff',
-    elo: 1450,
-    rank: 234,
-    wins: 47,
-    losses: 23,
-    totalMatches: 70,
-    winRate: 67,
-    joinDate: 'Jan 2024',
-    status: 'online' as const,
-    rankTier: 'gold' as const,
-    // Performance metrics
-    speed: 78,
-    accuracy: 85,
-    optimization: 72,
-    // Career milestones
-    firstWinElo: 18,
-    peakElo: 1520,
-    // Next goal
-    nextGoal: {
-        title: 'Reach 1500 ELO',
-        current: 1450,
-        target: 1500,
-    },
-    achievements: [
-        { id: '1', name: 'First Victory', icon: '🏆', description: 'Win your first match', unlocked: true, requirement: 'Win 1 match' },
-        { id: '2', name: 'Streak Master', icon: '🔥', description: 'Win 5 matches in a row', unlocked: true, requirement: 'Win 5 ranked matches in a row' },
-        { id: '3', name: 'Speed Demon', icon: '⚡', description: 'Solve a problem in under 5 minutes', unlocked: true, requirement: 'Complete any problem under 5 minutes' },
-        { id: '4', name: 'Perfectionist', icon: '💯', description: 'Get a perfect score', unlocked: false, requirement: 'Pass all test cases on first submission' },
-        { id: '5', name: 'Optimization King', icon: '🧠', description: 'Master time complexity', unlocked: false, requirement: 'Score 90%+ in optimization' },
-        { id: '6', name: 'Marathon Runner', icon: '🏃', description: 'Complete 100 matches', unlocked: false, requirement: 'Play 100 ranked matches' },
-    ],
-    matchHistory: [
-        { id: '1', opponent: 'AlgoKing', result: 'win' as const, eloChange: 25, date: '2 hours ago', matchType: 'ranked' as const },
-        { id: '2', opponent: 'ByteNinja', result: 'loss' as const, eloChange: -18, date: '5 hours ago', matchType: 'ranked' as const },
-        { id: '3', opponent: 'CodeMaster', result: 'win' as const, eloChange: 22, date: '1 day ago', matchType: 'ranked' as const },
-        { id: '4', opponent: 'DSAGuru', result: 'win' as const, eloChange: 20, date: '2 days ago', matchType: 'unranked' as const },
-        { id: '5', opponent: 'TreeTraverser', result: 'loss' as const, eloChange: -15, date: '3 days ago', matchType: 'ranked' as const },
-        { id: '6', opponent: 'HeapHero', result: 'win' as const, eloChange: 18, date: '4 days ago', matchType: 'practice' as const },
-    ],
-};
-
-const careerMilestones = [
-    { id: '1', icon: '🕒', label: 'Joined', value: mockProfile.joinDate },
-    { id: '2', icon: '🏆', label: 'First Win', value: `+${mockProfile.firstWinElo} ELO` },
-    { id: '3', icon: '🔥', label: 'Peak ELO', value: String(mockProfile.peakElo) },
-    { id: '4', icon: '⚔️', label: 'Current Rank', value: `#${mockProfile.rank}`, isCurrent: true },
-];
+import { useAuth } from '@/hooks';
 
 // Optimized section wrapper with IntersectionObserver
 const AnimatedSection = memo(({ children, className = '', delay = 0 }: {
@@ -155,8 +103,57 @@ const CircularProgress = memo(({ value }: { value: number }) => {
     );
 });
 
+// Mock data for fields not yet available from backend
+const mockAchievements = [
+    { id: '1', name: 'First Victory', icon: '🏆', description: 'Win your first match', unlocked: true, requirement: 'Win 1 match' },
+    { id: '2', name: 'Streak Master', icon: '🔥', description: 'Win 5 matches in a row', unlocked: true, requirement: 'Win 5 ranked matches in a row' },
+    { id: '3', name: 'Speed Demon', icon: '⚡', description: 'Solve a problem in under 5 minutes', unlocked: false, requirement: 'Complete any problem under 5 minutes' },
+    { id: '4', name: 'Perfectionist', icon: '💯', description: 'Get a perfect score', unlocked: false, requirement: 'Pass all test cases on first submission' },
+];
+
+const mockMatchHistory = [
+    { id: '1', opponent: 'AlgoKing', result: 'win' as const, eloChange: 25, date: '2 hours ago', matchType: 'ranked' as const },
+    { id: '2', opponent: 'ByteNinja', result: 'loss' as const, eloChange: -18, date: '5 hours ago', matchType: 'ranked' as const },
+    { id: '3', opponent: 'CodeMaster', result: 'win' as const, eloChange: 22, date: '1 day ago', matchType: 'ranked' as const },
+];
+
 export function Profile() {
-    const goalProgress = ((mockProfile.nextGoal.current / mockProfile.nextGoal.target) * 100);
+    const { user } = useAuth();
+
+    // Derive profile data from authenticated user with fallbacks
+    const profile = {
+        username: user?.username || 'Player',
+        email: user?.email || '',
+        tagline: user?.college ? `${user.college} · Competitive Programmer` : 'Competitive Programmer',
+        elo: user?.elo || 1200,
+        rank: 999, // TODO: Fetch from leaderboard API
+        wins: user?.wins || 0,
+        losses: user?.losses || 0,
+        totalMatches: user?.totalMatches || 0,
+        winRate: user?.totalMatches ? Math.round((user.wins / user.totalMatches) * 100) : 0,
+        joinDate: user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'New',
+        status: 'online' as const,
+        rankTier: (user?.elo || 1200) >= 1500 ? 'gold' as const : (user?.elo || 1200) >= 1300 ? 'silver' as const : 'bronze' as const,
+        // Performance metrics (mock until backend supports)
+        speed: 75,
+        accuracy: 82,
+        optimization: 70,
+        peakElo: user?.elo || 1200,
+        nextGoal: {
+            title: `Reach ${Math.ceil(((user?.elo || 1200) + 100) / 100) * 100} ELO`,
+            current: user?.elo || 1200,
+            target: Math.ceil(((user?.elo || 1200) + 100) / 100) * 100,
+        },
+    };
+
+    const careerMilestones = [
+        { id: '1', icon: '🕒', label: 'Joined', value: profile.joinDate },
+        { id: '2', icon: '🏆', label: 'First Win', value: profile.wins > 0 ? `+${Math.round(profile.elo * 0.015)} ELO` : 'Pending' },
+        { id: '3', icon: '🔥', label: 'Peak ELO', value: String(profile.peakElo) },
+        { id: '4', icon: '⚔️', label: 'Current Rank', value: `#${profile.rank}`, isCurrent: true },
+    ];
+
+    const goalProgress = ((profile.nextGoal.current / profile.nextGoal.target) * 100);
 
     return (
         <div className="min-h-screen bg-background relative">
@@ -176,17 +173,17 @@ export function Profile() {
                             {/* Left: Avatar + Name + Tagline */}
                             <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-6">
                                 <GlowAvatar
-                                    initial={mockProfile.username}
-                                    name={mockProfile.username}
-                                    rank={mockProfile.rankTier}
-                                    status={mockProfile.status}
+                                    initial={profile.username}
+                                    name={profile.username}
+                                    rank={profile.rankTier}
+                                    status={profile.status}
                                     size="lg"
                                 />
 
                                 <div className="text-center md:text-left">
                                     <div className="flex items-center justify-center gap-3 md:justify-start">
                                         <h1 className="text-3xl font-bold font-space text-foreground">
-                                            {mockProfile.username}
+                                            {profile.username}
                                         </h1>
                                         <Button variant="outline" size="sm" className="h-8 font-space">
                                             <Edit2 className="mr-1 h-3 w-3" />
@@ -195,7 +192,7 @@ export function Profile() {
                                     </div>
 
                                     <p className="mt-2 text-muted-foreground font-space">
-                                        {mockProfile.tagline} · <span className="text-purple-400">Rank #{mockProfile.rank}</span>
+                                        {profile.tagline} · <span className="text-purple-400">Rank #{profile.rank}</span>
                                     </p>
 
                                     <div className="mt-3 flex items-center justify-center gap-4 md:justify-start">
@@ -211,9 +208,9 @@ export function Profile() {
 
                             {/* Right: Rank stats as badges */}
                             <div className="flex gap-4">
-                                <RankBadge label="ELO" value={mockProfile.elo} variant="elo" />
-                                <RankBadge label="Rank" value={`#${mockProfile.rank}`} variant="rank" />
-                                <RankBadge label="Win %" value={`${mockProfile.winRate}%`} variant="winrate" />
+                                <RankBadge label="ELO" value={profile.elo} variant="elo" />
+                                <RankBadge label="Rank" value={`#${profile.rank}`} variant="rank" />
+                                <RankBadge label="Win %" value={`${profile.winRate}%`} variant="winrate" />
                             </div>
                         </div>
                     </div>
@@ -242,10 +239,10 @@ export function Profile() {
                             <div className="flex items-center justify-center gap-8">
                                 {/* Circular progress - optimized */}
                                 <div className="relative h-32 w-32">
-                                    <CircularProgress value={mockProfile.winRate} />
+                                    <CircularProgress value={profile.winRate} />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                                         <span className="text-2xl font-bold font-space text-foreground">
-                                            <AnimatedCounter value={mockProfile.winRate} suffix="%" />
+                                            <AnimatedCounter value={profile.winRate} suffix="%" />
                                         </span>
                                         <span className="text-xs text-muted-foreground font-space">Win Rate</span>
                                     </div>
@@ -256,21 +253,21 @@ export function Profile() {
                                         <div className="h-3 w-3 rounded-full bg-green-500" />
                                         <span className="text-sm text-muted-foreground font-space">Wins:</span>
                                         <span className="font-bold text-green-500 font-space">
-                                            <AnimatedCounter value={mockProfile.wins} />
+                                            <AnimatedCounter value={profile.wins} />
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="h-3 w-3 rounded-full bg-red-500" />
                                         <span className="text-sm text-muted-foreground font-space">Losses:</span>
                                         <span className="font-bold text-red-500 font-space">
-                                            <AnimatedCounter value={mockProfile.losses} />
+                                            <AnimatedCounter value={profile.losses} />
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Swords className="h-3 w-3 text-muted-foreground" />
                                         <span className="text-sm text-muted-foreground font-space">Total:</span>
                                         <span className="font-bold font-space">
-                                            <AnimatedCounter value={mockProfile.totalMatches} />
+                                            <AnimatedCounter value={profile.totalMatches} />
                                         </span>
                                     </div>
                                 </div>
@@ -283,19 +280,19 @@ export function Profile() {
                             <div className="space-y-4">
                                 <ProgressBar
                                     label="Speed"
-                                    value={mockProfile.speed}
+                                    value={profile.speed}
                                     color="orange"
                                     description="Avg solve time"
                                 />
                                 <ProgressBar
                                     label="Accuracy"
-                                    value={mockProfile.accuracy}
+                                    value={profile.accuracy}
                                     color="green"
                                     description="Test cases passed"
                                 />
                                 <ProgressBar
                                     label="Optimization"
-                                    value={mockProfile.optimization}
+                                    value={profile.optimization}
                                     color="blue"
                                     description="Time/space efficiency"
                                 />
@@ -311,7 +308,7 @@ export function Profile() {
                     </h2>
 
                     <div className="grid gap-4 sm:grid-cols-2">
-                        {mockProfile.matchHistory.map((match, index) => (
+                        {mockMatchHistory.map((match, index) => (
                             <BattleCard
                                 key={match.id}
                                 opponent={match.opponent}
@@ -332,7 +329,7 @@ export function Profile() {
                     </h2>
 
                     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                        {mockProfile.achievements.map((achievement, index) => (
+                        {mockAchievements.map((achievement, index) => (
                             <AchievementBadge
                                 key={achievement.id}
                                 name={achievement.name}
@@ -352,14 +349,14 @@ export function Profile() {
                         <div className="p-8 text-center">
                             <h2 className="mb-2 text-2xl font-bold font-space text-foreground">🎮 What's Next?</h2>
                             <p className="mb-6 text-lg text-muted-foreground font-space">
-                                Next Goal: <span className="text-purple-400 font-semibold">{mockProfile.nextGoal.title}</span>
+                                Next Goal: <span className="text-purple-400 font-semibold">{profile.nextGoal.title}</span>
                             </p>
 
                             {/* Goal progress bar */}
                             <div className="mx-auto mb-6 max-w-md">
                                 <div className="flex justify-between text-sm text-muted-foreground mb-2 font-space">
-                                    <span>Current: {mockProfile.nextGoal.current}</span>
-                                    <span>Target: {mockProfile.nextGoal.target}</span>
+                                    <span>Current: {profile.nextGoal.current}</span>
+                                    <span>Target: {profile.nextGoal.target}</span>
                                 </div>
                                 <div className="h-3 w-full overflow-hidden rounded-full bg-secondary">
                                     <div
@@ -368,7 +365,7 @@ export function Profile() {
                                     />
                                 </div>
                                 <p className="mt-2 text-sm text-muted-foreground font-space">
-                                    {mockProfile.nextGoal.target - mockProfile.nextGoal.current} ELO to go!
+                                    {profile.nextGoal.target - profile.nextGoal.current} ELO to go!
                                 </p>
                             </div>
 

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 // Config
 dotenv.config();
-import  type { Application, Request, Response } from 'express';
+import type { Application, Request, Response } from 'express';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -13,7 +13,10 @@ const PORT = process.env.PORT || 3000;
 
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
 
 

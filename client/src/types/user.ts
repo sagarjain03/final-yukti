@@ -8,6 +8,7 @@ export interface User {
     wins: number;
     losses: number;
     totalMatches: number;
+    college?: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -55,4 +56,5 @@ export interface SignupCredentials {
     username: string;
     email: string;
     password: string;
+    college?: string;
 }

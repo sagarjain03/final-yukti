@@ -1,78 +1,76 @@
-// import api from './api';
+import api from './api';
 import type { User, LoginCredentials, SignupCredentials } from '@/types/user';
 import type { AuthResponse } from '@/types/api';
 
-// MOCK USER FOR FRONTEND TESTING
-const MOCK_USER: User = {
-    id: 'mock-user-123',
-    username: 'Demo User',
-    email: 'demo@example.com',
-    elo: 1200,
-    wins: 10,
-    losses: 5,
-    totalMatches: 15,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'
-};
+// Backend user interface (matches IUser from server)
+interface BackendUser {
+    _id: string;
+    username: string;
+    email: string;
+    rating: number;
+    college?: string;
+    matchesPlayed: number;
+    matchesWon: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+/**
+ * Single source of truth for user mapping.
+ * Transforms backend IUser format to frontend User format.
+ */
+function mapBackendUser(backendUser: BackendUser): User {
+    return {
+        id: backendUser._id,
+        username: backendUser.username,
+        email: backendUser.email,
+        elo: backendUser.rating,
+        wins: backendUser.matchesWon,
+        losses: backendUser.matchesPlayed - backendUser.matchesWon,
+        totalMatches: backendUser.matchesPlayed,
+        college: backendUser.college,
+        createdAt: backendUser.createdAt,
+        updatedAt: backendUser.updatedAt,
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${backendUser.username}`,
+    };
+}
 
 export const authService = {
     /**
      * Login user with email and password
      */
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        // Mock login for testing
-        // const response = await api.post<AuthResponse>('/auth/login', credentials);
-        // return response.data;
-
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    user: { ...MOCK_USER, email: credentials.email },
-                    token: 'mock-jwt-token'
-                });
-            }, 800);
-        });
+        const response = await api.post('/auth/login', credentials);
+        // Backend returns: { statusCode, data: { user, token }, message }
+        const { user, token } = response.data.data;
+        return { user: mapBackendUser(user), token };
     },
 
     /**
      * Register new user
      */
     async signup(credentials: SignupCredentials): Promise<AuthResponse> {
-        // Mock signup for testing
-        // const response = await api.post<AuthResponse>('/auth/signup', credentials);
-        // return response.data;
-
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    user: { ...MOCK_USER, username: credentials.username, email: credentials.email },
-                    token: 'mock-jwt-token'
-                });
-            }, 800);
-        });
+        const response = await api.post('/auth/register', credentials);
+        // Backend returns: { statusCode, data: { user, token }, message }
+        const { user, token } = response.data.data;
+        return { user: mapBackendUser(user), token };
     },
 
     /**
-     * Get current authenticated user
+     * Get current authenticated user (for session restore)
+     * Returns only user, NOT token (token already exists in storage)
      */
     async getCurrentUser(): Promise<User> {
-        // Mock get user for testing
-        // const response = await api.get<{ user: User }>('/auth/me');
-        // return response.data.user;
-
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(MOCK_USER);
-            }, 500);
-        });
+        const response = await api.get('/auth/me');
+        // Backend returns: { statusCode, data: { user }, message }
+        const { user } = response.data.data;
+        return mapBackendUser(user);
     },
 
     /**
-     * Logout user
+     * Logout user - clears token from storage
      */
     async logout(): Promise<void> {
-        // await api.post('/auth/logout');
         localStorage.removeItem('token');
     },
 
@@ -80,24 +78,21 @@ export const authService = {
      * Request password reset
      */
     async forgotPassword(email: string): Promise<void> {
-        // await api.post('/auth/forgot-password', { email });
-        return Promise.resolve();
+        await api.post('/auth/forgot-password', { email });
     },
 
     /**
      * Reset password with token
      */
     async resetPassword(token: string, newPassword: string): Promise<void> {
-        // await api.post('/auth/reset-password', { token, password: newPassword });
-        return Promise.resolve();
+        await api.post('/auth/reset-password', { token, password: newPassword });
     },
 
     /**
      * Update user profile
      */
     async updateProfile(data: Partial<User>): Promise<User> {
-        // const response = await api.patch<{ user: User }>('/auth/profile', data);
-        // return response.data.user;
-        return Promise.resolve({ ...MOCK_USER, ...data });
+        const response = await api.patch('/auth/profile', data);
+        return mapBackendUser(response.data.data.user);
     },
 };

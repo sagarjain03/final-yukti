@@ -1,12 +1,18 @@
 import { IconHome, IconTrophy, IconDeviceGamepad2, IconUser, IconLogin, IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import { useAuth } from '@/hooks';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function GlobalNavigation() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, logout } = useAuth();
     const location = useLocation();
+    const navigate = useNavigate();
     const currentPath = location.pathname;
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     const allLinks = [
         {
@@ -38,7 +44,8 @@ export function GlobalNavigation() {
             {
                 title: "Logout",
                 icon: <IconLogout className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-                href: "/login", // Navigate to login on logout (auth state cleared elsewhere)
+                href: "/login",
+                onClick: handleLogout,
             }
         ] : [
             {

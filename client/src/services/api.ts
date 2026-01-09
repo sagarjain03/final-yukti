@@ -8,6 +8,7 @@ const api: AxiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
     timeout: 10000,
+    withCredentials: true, // For future refresh-token cookies
 });
 
 // Request interceptor - Add auth token
@@ -24,16 +25,22 @@ api.interceptors.request.use(
     }
 );
 
-// Response interceptor - Handle errors
+// Response interceptor - Normalize errors
 api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError) => {
-        if (error.response?.status === 401) {
-            // Token expired or invalid
-            localStorage.removeItem('token');
-            window.location.href = '/login';
-        }
-        return Promise.reject(error);
+    (error: AxiosError<{ message?: string; statusCode?: number }>) => {
+        // Extract clean error message from backend ApiError format
+        const message = error.response?.data?.message || error.message || 'An error occurred';
+        const statusCode = error.response?.status;
+
+        // Create normalized error
+        const normalizedError = new Error(message);
+        (normalizedError as any).statusCode = statusCode;
+
+        // Don't redirect on 401 - let the caller handle it
+        // This allows getCurrentUser to handle expired tokens gracefully
+
+        return Promise.reject(normalizedError);
     }
 );
 
