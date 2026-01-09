@@ -75,7 +75,7 @@ const MilestoneCardComponent = ({ milestone, index, isInView }: MilestoneCardPro
             {milestone.isCurrent && (
                 <span
                     className={cn(
-                        'absolute -top-2 -right-2 rounded-full bg-purple-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white transition-all duration-300',
+                        'absolute -top-2 -right-2 rounded-full bg-purple-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white font-space transition-all duration-300 font-space',
                         isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
                     )}
                     style={{ transitionDelay: `${500 + index * 150}ms` }}
@@ -85,11 +85,11 @@ const MilestoneCardComponent = ({ milestone, index, isInView }: MilestoneCardPro
             )}
 
             <span className="text-2xl">{milestone.icon}</span>
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs uppercase tracking-wider text-muted-foreground font-space">
                 {milestone.label}
             </span>
             <span className={cn(
-                'font-bold',
+                'font-bold font-space',
                 milestone.isCurrent ? 'text-lg text-purple-400' : 'text-sm text-foreground'
             )}>
                 {milestone.value}

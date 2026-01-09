@@ -61,12 +61,12 @@ const AchievementBadgeComponent = ({
 
             <span className="text-4xl">{icon}</span>
             <span className={cn(
-                'text-sm font-medium text-center',
+                'text-sm font-medium text-center font-space font-space',
                 unlocked ? 'text-foreground' : 'text-muted-foreground'
             )}>
                 {name}
             </span>
-            <span className="text-xs text-muted-foreground text-center line-clamp-2">
+            <span className="text-xs text-muted-foreground text-center line-clamp-2 font-space">
                 {description}
             </span>
 

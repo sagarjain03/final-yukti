@@ -70,7 +70,7 @@ const GlowAvatarComponent = ({
             {/* Rank glow ring (inner) - CSS animation only */}
             <div
                 className={cn(
-                    'relative flex items-center justify-center rounded-full border-4 border-background bg-gradient-to-br font-bold text-white will-change-[box-shadow] animate-avatar-glow',
+                    'relative flex items-center justify-center rounded-full border-4 border-background bg-gradient-to-br font-bold text-white will-change-[box-shadow] animate-avatar-glow font-space font-space',
                     sizeStyles[size],
                     rankStyle.ring,
                     rankStyle.glow

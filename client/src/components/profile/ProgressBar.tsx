@@ -47,8 +47,8 @@ const ProgressBarComponent = ({
     return (
         <div ref={ref} className={cn('space-y-2', className)}>
             <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-foreground">{label}</span>
-                <span className="text-sm font-bold text-muted-foreground">{value}%</span>
+                <span className="text-sm font-medium text-foreground font-space">{label}</span>
+                <span className="text-sm font-bold text-muted-foreground font-space">{value}%</span>
             </div>
 
             <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary">

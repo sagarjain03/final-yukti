@@ -482,3 +482,46 @@ body {
     animation: none !important;
   }
 }
+
+/* ============================================
+   DASHBOARD STYLES
+   ============================================ */
+
+/* Soft inner glow for primary cards */
+.dashboard-card-primary {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.01) 100%);
+  position: relative;
+}
+
+.dashboard-card-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+      rgba(59, 130, 246, 0) 0%,
+      rgba(59, 130, 246, 0.4) 50%,
+      rgba(59, 130, 246, 0) 100%);
+  opacity: 0.5;
+}
+
+/* Subtle pulse for the "Find Match" primary button */
+@keyframes soft-pulse-border {
+
+  0%,
+  100% {
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+
+  50% {
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 10px 0 rgba(59, 130, 246, 0.1);
+  }
+}
+
+.animate-soft-pulse-border {
+  animation: soft-pulse-border 3s ease-in-out infinite;
+}

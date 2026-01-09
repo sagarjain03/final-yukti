@@ -185,16 +185,16 @@ export function Profile() {
 
                                 <div className="text-center md:text-left">
                                     <div className="flex items-center justify-center gap-3 md:justify-start">
-                                        <h1 className="text-3xl font-bold text-foreground">
+                                        <h1 className="text-3xl font-bold font-space text-foreground">
                                             {mockProfile.username}
                                         </h1>
-                                        <Button variant="outline" size="sm" className="h-8">
+                                        <Button variant="outline" size="sm" className="h-8 font-space">
                                             <Edit2 className="mr-1 h-3 w-3" />
                                             Edit
                                         </Button>
                                     </div>
 
-                                    <p className="mt-2 text-muted-foreground">
+                                    <p className="mt-2 text-muted-foreground font-space">
                                         {mockProfile.tagline} · <span className="text-purple-400">Rank #{mockProfile.rank}</span>
                                     </p>
 
@@ -221,7 +221,7 @@ export function Profile() {
 
                 {/* ========== SECTION 2: Career Snapshot Timeline ========== */}
                 <AnimatedSection className="mb-12" delay={1}>
-                    <h2 className="mb-6 text-xl font-semibold text-foreground">
+                    <h2 className="mb-6 text-xl font-semibold font-space text-foreground">
                         🎯 Your Journey So Far
                     </h2>
                     <div className="rounded-xl border border-border bg-card/30 backdrop-blur-sm p-4">
@@ -231,45 +231,45 @@ export function Profile() {
 
                 {/* ========== SECTION 3: Performance Deep Dive ========== */}
                 <AnimatedSection className="mb-12" delay={2}>
-                    <h2 className="mb-6 text-xl font-semibold text-foreground">
+                    <h2 className="mb-6 text-xl font-semibold font-space text-foreground">
                         📊 Performance Deep Dive
                     </h2>
 
                     <div className="grid gap-6 md:grid-cols-2">
                         {/* Left: Win/Loss Breakdown */}
                         <div className="rounded-xl border border-border bg-card/30 backdrop-blur-sm p-6">
-                            <h3 className="mb-4 text-lg font-medium text-foreground">Win/Loss Breakdown</h3>
+                            <h3 className="mb-4 text-lg font-medium font-space text-foreground">Win/Loss Breakdown</h3>
                             <div className="flex items-center justify-center gap-8">
                                 {/* Circular progress - optimized */}
                                 <div className="relative h-32 w-32">
                                     <CircularProgress value={mockProfile.winRate} />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                        <span className="text-2xl font-bold text-foreground">
+                                        <span className="text-2xl font-bold font-space text-foreground">
                                             <AnimatedCounter value={mockProfile.winRate} suffix="%" />
                                         </span>
-                                        <span className="text-xs text-muted-foreground">Win Rate</span>
+                                        <span className="text-xs text-muted-foreground font-space">Win Rate</span>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2">
                                         <div className="h-3 w-3 rounded-full bg-green-500" />
-                                        <span className="text-sm text-muted-foreground">Wins:</span>
-                                        <span className="font-bold text-green-500">
+                                        <span className="text-sm text-muted-foreground font-space">Wins:</span>
+                                        <span className="font-bold text-green-500 font-space">
                                             <AnimatedCounter value={mockProfile.wins} />
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="h-3 w-3 rounded-full bg-red-500" />
-                                        <span className="text-sm text-muted-foreground">Losses:</span>
-                                        <span className="font-bold text-red-500">
+                                        <span className="text-sm text-muted-foreground font-space">Losses:</span>
+                                        <span className="font-bold text-red-500 font-space">
                                             <AnimatedCounter value={mockProfile.losses} />
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Swords className="h-3 w-3 text-muted-foreground" />
-                                        <span className="text-sm text-muted-foreground">Total:</span>
-                                        <span className="font-bold">
+                                        <span className="text-sm text-muted-foreground font-space">Total:</span>
+                                        <span className="font-bold font-space">
                                             <AnimatedCounter value={mockProfile.totalMatches} />
                                         </span>
                                     </div>
@@ -279,7 +279,7 @@ export function Profile() {
 
                         {/* Right: Skill Breakdown */}
                         <div className="rounded-xl border border-border bg-card/30 backdrop-blur-sm p-6">
-                            <h3 className="mb-4 text-lg font-medium text-foreground">Skill Breakdown</h3>
+                            <h3 className="mb-4 text-lg font-medium font-space text-foreground">Skill Breakdown</h3>
                             <div className="space-y-4">
                                 <ProgressBar
                                     label="Speed"
@@ -306,7 +306,7 @@ export function Profile() {
 
                 {/* ========== SECTION 4: Match History ========== */}
                 <AnimatedSection className="mb-12" delay={3}>
-                    <h2 className="mb-6 text-xl font-semibold text-foreground">
+                    <h2 className="mb-6 text-xl font-semibold font-space text-foreground">
                         ⚔️ Battle History
                     </h2>
 
@@ -327,7 +327,7 @@ export function Profile() {
 
                 {/* ========== SECTION 5: Achievements Grid ========== */}
                 <AnimatedSection className="mb-12" delay={4}>
-                    <h2 className="mb-6 text-xl font-semibold text-foreground">
+                    <h2 className="mb-6 text-xl font-semibold font-space text-foreground">
                         🏅 Achievements
                     </h2>
 
@@ -350,14 +350,14 @@ export function Profile() {
                 <AnimatedSection className="mb-8" delay={5}>
                     <div className="overflow-hidden rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-900/20 via-card/30 to-blue-900/20 backdrop-blur-sm">
                         <div className="p-8 text-center">
-                            <h2 className="mb-2 text-2xl font-bold text-foreground">🎮 What's Next?</h2>
-                            <p className="mb-6 text-lg text-muted-foreground">
+                            <h2 className="mb-2 text-2xl font-bold font-space text-foreground">🎮 What's Next?</h2>
+                            <p className="mb-6 text-lg text-muted-foreground font-space">
                                 Next Goal: <span className="text-purple-400 font-semibold">{mockProfile.nextGoal.title}</span>
                             </p>
 
                             {/* Goal progress bar */}
                             <div className="mx-auto mb-6 max-w-md">
-                                <div className="flex justify-between text-sm text-muted-foreground mb-2">
+                                <div className="flex justify-between text-sm text-muted-foreground mb-2 font-space">
                                     <span>Current: {mockProfile.nextGoal.current}</span>
                                     <span>Target: {mockProfile.nextGoal.target}</span>
                                 </div>
@@ -367,14 +367,14 @@ export function Profile() {
                                         style={{ width: `${goalProgress}%` }}
                                     />
                                 </div>
-                                <p className="mt-2 text-sm text-muted-foreground">
+                                <p className="mt-2 text-sm text-muted-foreground font-space">
                                     {mockProfile.nextGoal.target - mockProfile.nextGoal.current} ELO to go!
                                 </p>
                             </div>
 
                             {/* CTA Button with CSS glow pulse */}
                             <div className="inline-block rounded-lg animate-cta-glow">
-                                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-8">
+                                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-8 font-space">
                                     Enter Arena
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>

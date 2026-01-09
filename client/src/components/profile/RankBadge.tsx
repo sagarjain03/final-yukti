@@ -44,8 +44,8 @@ const RankBadgeComponent = ({ label, value, variant, className }: RankBadgeProps
                     style.bg
                 )}
             >
-                <span className={cn('text-2xl font-bold', style.text)}>{value}</span>
-                <span className="text-xs uppercase tracking-wider text-muted-foreground">{label}</span>
+                <span className={cn('text-2xl font-bold font-space', style.text)}>{value}</span>
+                <span className="text-xs uppercase tracking-wider text-muted-foreground font-space">{label}</span>
             </div>
 
             {/* Tooltip - CSS only */}

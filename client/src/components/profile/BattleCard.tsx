@@ -84,23 +84,23 @@ const BattleCardComponent = ({
 
                 <div>
                     <div className="flex items-center gap-2">
-                        <span className="font-medium text-foreground">vs {opponent}</span>
+                        <span className="font-medium text-foreground font-space">vs {opponent}</span>
                         {/* Match type chip */}
                         <span className={cn(
-                            'rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider',
+                            'rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider font-space',
                             typeStyle.bg,
                             typeStyle.text
                         )}>
                             {matchType}
                         </span>
                     </div>
-                    <span className="text-sm text-muted-foreground">{timeAgo}</span>
+                    <span className="text-sm text-muted-foreground font-space">{timeAgo}</span>
                 </div>
             </div>
 
             {/* Right: Result */}
             <div className="flex flex-col items-end gap-1">
-                <span className={cn('font-bold', style.text)}>
+                <span className={cn('font-bold font-space', style.text)}>
                     {eloChange > 0 ? '+' : ''}{eloChange} ELO
                 </span>
                 <ResultBadge result={result} />
@@ -119,7 +119,7 @@ const ResultBadgeComponent = ({ result, className }: ResultBadgeProps) => {
 
     return (
         <span className={cn(
-            'rounded-full border px-2 py-0.5 text-xs font-medium uppercase tracking-wider',
+            'rounded-full border px-2 py-0.5 text-xs font-medium uppercase tracking-wider font-space font-space',
             style.badge,
             className
         )}>

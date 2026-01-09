@@ -1,28 +1,81 @@
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Play, Trophy, TrendingUp } from 'lucide-react';
+import { motion, LazyMotion, domAnimation } from 'framer-motion';
+import { Trophy, Clock, Target, Zap, Activity, Brain } from 'lucide-react';
 import { Footer } from '@/components/layout/Footer';
-import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks';
 import { Spotlight } from '@/components/ui/spotlight-new';
 import { GlobalNavigation } from '@/components/layout/GlobalNavigation';
-import { HoverEffect } from '@/components/ui/card-hover-effect';
+import { AnimatedCounter } from '@/components/profile/AnimatedCounter';
+import {
+    QuickActionsStrip,
+    StatCard,
+    MomentumBar,
+    MatchRow
+} from '@/components/dashboard';
+import { Link } from 'react-router-dom';
 
-// Mock data
+// Mock data - In a real app, this would come from an API
 const recentMatches = [
-    { id: '1', opponent: 'CodeMaster', result: 'win', eloChange: 25, date: '2h ago' },
-    { id: '2', opponent: 'AlgoKing', result: 'loss', eloChange: -18, date: '5h ago' },
-    { id: '3', opponent: 'ByteNinja', result: 'win', eloChange: 22, date: '1d ago' },
+    { id: '1', opponent: 'CodeMaster', result: 'win' as const, eloChange: 25, date: '2h ago' },
+    { id: '2', opponent: 'AlgoKing', result: 'loss' as const, eloChange: -18, date: '5h ago' },
+    { id: '3', opponent: 'ByteNinja', result: 'win' as const, eloChange: 22, date: '1d ago' },
+    { id: '4', opponent: 'DevWizard', result: 'win' as const, eloChange: 15, date: '2d ago' },
+    { id: '5', opponent: 'SystemArch', result: 'loss' as const, eloChange: -12, date: '3d ago' },
 ];
 
-const matchStats = [
-    { title: "68%", description: "Win Rate", link: "#" },
-    { title: "47", description: "Matches Played", link: "#" },
-    { title: "+52", description: "Elo Gain (Week)", link: "#" },
+const stats = [
+    // Row 1: High Priority
+    {
+        title: "ELO Rating",
+        value: "1,450",
+        trend: "+52 this week",
+        isPositive: true,
+        variant: 'primary' as const,
+        icon: <Trophy className="w-4 h-4" />
+    },
+    {
+        title: "Win Rate",
+        value: "68%",
+        trend: "+3%",
+        isPositive: true,
+        variant: 'primary' as const,
+        icon: <Zap className="w-4 h-4" />
+    },
+    {
+        title: "Elo Momentum",
+        value: "+52",
+        trend: "Rising",
+        isPositive: true,
+        variant: 'primary' as const,
+        icon: <Activity className="w-4 h-4" />
+    },
+    // Row 2: Secondary
+    {
+        title: "Matches Played",
+        value: "47",
+        subtext: "12 this week",
+        variant: 'secondary' as const,
+        icon: <Target className="w-4 h-4" />
+    },
+    {
+        title: "Avg Solve Time",
+        value: "3m 42s",
+        subtext: "Top 15% globally",
+        variant: 'secondary' as const,
+        icon: <Clock className="w-4 h-4" />
+    },
+    {
+        title: "Consistency",
+        value: "Stable",
+        subtext: "Last 20 matches",
+        variant: 'secondary' as const,
+        icon: <Brain className="w-4 h-4" />
+    },
 ];
 
 export function Dashboard() {
     const { user } = useAuth();
+    const currentElo = 1450;
+    const targetElo = 1500;
 
     return (
         <div className="min-h-screen bg-background relative overflow-hidden">
@@ -32,97 +85,89 @@ export function Dashboard() {
                 <Spotlight />
             </div>
 
-            <main className="container mx-auto max-w-4xl px-4 py-12 relative z-10">
-                {/* Hero - Rank & ELO */}
+            <main className="container mx-auto max-w-5xl px-4 py-12 relative z-10">
+                {/* 1. Spotlight Hero */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="mb-12 text-center"
+                    className="mb-10 text-center"
                 >
                     <p className="mb-2 text-sm font-space text-muted-foreground">Welcome back,</p>
-                    <h1 className="mb-8 text-2xl font-medium font-space text-foreground">
+                    <h1 className="mb-6 text-2xl font-medium font-space text-foreground">
                         {user?.username || 'Player'}
                     </h1>
 
-                    {/* ELO - Hero number */}
-                    <div className="mb-2">
-                        <span className="text-6xl font-bold font-space tracking-tight text-foreground md:text-7xl">
-                            1,450
-                        </span>
-                    </div>
-                    <p className="mb-1 text-sm font-space text-muted-foreground">ELO Rating</p>
-
-                    {/* Rank */}
-                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                        <Trophy className="h-4 w-4" />
-                        <span className="text-lg font-semibold font-space text-foreground">#234</span>
-                        <span className="text-sm">Global Rank</span>
+                    {/* ELO Display */}
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex items-start gap-2">
+                            <span className="text-6xl font-bold font-space tracking-tight text-foreground md:text-7xl">
+                                <AnimatedCounter value={currentElo} duration={1.5} />
+                            </span>
+                            <span className="mt-2 flex items-center text-xs font-bold text-green-500 bg-green-500/10 px-1.5 py-0.5 rounded">
+                                <Trophy className="w-3 h-3 mr-1" />
+                                #234
+                            </span>
+                        </div>
+                        <p className="mb-1 text-sm font-space text-muted-foreground">Global Rank</p>
                     </div>
                 </motion.div>
 
-                {/* Play Button - Primary Action */}
+                {/* 2. Quick Actions Strip */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.3 }}
-                    className="mb-12 flex justify-center"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.3 }}
+                    className="mb-12"
                 >
-                    <Link to="/lobby">
-                        <Button size="xl" className="px-12 font-space">
-                            <Play className="mr-2 h-5 w-5" />
-                            Find Match
-                        </Button>
-                    </Link>
+                    <QuickActionsStrip />
                 </motion.div>
 
-                {/* Secondary Stats using HoverEffect */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.3 }}
-                    className="mb-8"
-                >
-                    <HoverEffect items={matchStats} className="py-0" />
-                </motion.div>
+                {/* 3. Performance Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                    {stats.map((stat, index) => (
+                        <StatCard
+                            key={stat.title}
+                            {...stat}
+                            delay={index + 2} // Staggered delay
+                        />
+                    ))}
+                </div>
 
-                {/* Recent Matches */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.3 }}
-                >
-                    <div className="mb-3 flex items-center justify-between">
-                        <h2 className="text-sm font-medium text-muted-foreground">Recent Matches</h2>
-                        <Link to="/profile" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                            View all →
-                        </Link>
+                <LazyMotion features={domAnimation}>
+                    {/* 4. Momentum Section */}
+                    <div className="mb-12">
+                        <MomentumBar
+                            current={currentElo}
+                            target={targetElo}
+                            milestoneName="Gold League"
+                        />
                     </div>
-                    <div className="space-y-1">
-                        {recentMatches.map((match) => (
-                            <div
-                                key={match.id}
-                                className="flex items-center justify-between rounded-md px-3 py-2.5 transition-colors hover:bg-secondary"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className={`h-1.5 w-1.5 rounded-full ${match.result === 'win' ? 'bg-green-500' : 'bg-red-500'
-                                            }`}
-                                    />
-                                    <span className="text-sm text-foreground">vs {match.opponent}</span>
-                                    <span className="text-xs text-muted-foreground">{match.date}</span>
-                                </div>
-                                <span
-                                    className={`text-sm font-medium tabular-nums ${match.eloChange > 0 ? 'text-green-500' : 'text-red-500'
-                                        }`}
-                                >
-                                    {match.eloChange > 0 ? '+' : ''}
-                                    {match.eloChange}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
+
+                    {/* 5. Recent Activity Feed */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <div className="mb-4 flex items-center justify-between px-1">
+                            <h2 className="text-sm font-medium font-space text-muted-foreground">Recent Activity</h2>
+                            <Link to="/profile" className="text-xs font-space text-muted-foreground hover:text-foreground transition-colors">
+                                View all →
+                            </Link>
+                        </div>
+                        <div className="space-y-2">
+                            {recentMatches.map((match, index) => (
+                                <MatchRow
+                                    key={match.id}
+                                    {...match}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+                    </motion.div>
+                </LazyMotion>
             </main>
 
             <Footer />
