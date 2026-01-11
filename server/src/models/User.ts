@@ -23,7 +23,7 @@ const userSchema: Schema<IUser> = new Schema(
     rating: { 
       type: Number, 
       default: 1200,
-      index: true // Indexing for faster matchmaking queries
+      index: true 
     },
     college: {
       type: String,

@@ -30,6 +30,7 @@ import { errorHandler } from './middlewares/error.middleware.js';
 import authRoutes from './routes/auth.routes.js';
 import problemRoutes from './routes/problem.routes.js';
 import submissionRoutes from './routes/submission.routes.js';
+import matchRoutes from './routes/match.routes.js';
 
 
 
@@ -47,6 +48,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/problems', problemRoutes);
 app.use('/api/submissions', submissionRoutes);
+app.use('/api/matches', matchRoutes);
 // Global Error Handler
 app.use(errorHandler);
 

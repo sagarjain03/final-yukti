@@ -129,7 +129,7 @@ export function Dashboard() {
                         <StatCard
                             key={stat.title}
                             {...stat}
-                            delay={index + 2} // Staggered delay
+                            delay={index + 2} 
                         />
                     ))}
                 </div>
