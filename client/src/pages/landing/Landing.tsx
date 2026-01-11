@@ -39,13 +39,18 @@ export function Landing() {
                 <div className="container mx-auto max-w-4xl text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        // Fix: margin "-100px" forces the element to 'exit' earlier when scrolling down, 
+                        // ensuring it resets so it can re-animate when you scroll up.
+                        viewport={{ once: false, amount: 0.2, margin: "-100px" }}
                         transition={{ duration: 0.5 }}
                     >
                         <h1 className="mb-6 text-6xl font-space font-bold tracking-tighter text-foreground md:text-8xl">
                             <EncryptedText text="Competitive Coding," />
                             <br />
-                            <span className="text-muted-foreground"><EncryptedText text="Simplified." revealDelayMs={70} /></span>
+                            <span className="text-muted-foreground">
+                                <EncryptedText text="Simplified." revealDelayMs={70} />
+                            </span>
                         </h1>
                         <p className="mx-auto mb-12 font-space max-w-lg text-lg text-muted-foreground">
                             Real-time head-to-head coding battles. Climb the ranks. Prove your skills.
@@ -53,9 +58,10 @@ export function Landing() {
                     </motion.div>
 
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.4 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: false, amount: 0.2, margin: "-100px" }}
+                        transition={{ delay: 0.2, duration: 0.4 }}
                         className="flex flex-col items-center justify-center gap-3 sm:flex-row"
                     >
                         <Link to="/signup">
@@ -84,4 +90,3 @@ export function Landing() {
         </div>
     );
 }
-

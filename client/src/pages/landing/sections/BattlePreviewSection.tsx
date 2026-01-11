@@ -60,7 +60,7 @@ export function BattlePreviewSection() {
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5, margin: "-100px" }} // Changed: once: false
                     transition={{ duration: 0.5 }}
                     className="text-center text-3xl font-space font-bold text-foreground mb-4"
                 >
@@ -69,7 +69,7 @@ export function BattlePreviewSection() {
                 <motion.p
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5, margin: "-100px" }} // Changed: once: false
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="text-center text-muted-foreground mb-16 max-w-md mx-auto"
                 >
@@ -81,7 +81,7 @@ export function BattlePreviewSection() {
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: false, amount: 0.3, margin: "-50px" }} // Changed: once: false
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="rounded-xl border border-border bg-card/50 backdrop-blur-sm overflow-hidden"
                     >
@@ -113,7 +113,7 @@ export function BattlePreviewSection() {
                     <motion.div
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: false, amount: 0.3, margin: "-50px" }} // Changed: once: false
                         transition={{ duration: 0.5, delay: 0.3 }}
                         className="space-y-4"
                     >
@@ -167,8 +167,9 @@ export function BattlePreviewSection() {
                                     <motion.div
                                         className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
                                         initial={{ width: 0 }}
-                                        animate={{ width: `${yourProgress}%` }}
-                                        transition={{ duration: 0.5 }}
+                                        whileInView={{ width: `${yourProgress}%` }} // Changed to whileInView
+                                        viewport={{ once: false }} // Allows bar to grow again on scroll
+                                        transition={{ duration: 0.8, ease: "easeOut" }}
                                     />
                                 </div>
                             </div>
@@ -183,8 +184,9 @@ export function BattlePreviewSection() {
                                     <motion.div
                                         className="h-full bg-gradient-to-r from-purple-500 to-pink-400 rounded-full"
                                         initial={{ width: 0 }}
-                                        animate={{ width: `${opponentProgress}%` }}
-                                        transition={{ duration: 0.5 }}
+                                        whileInView={{ width: `${opponentProgress}%` }} // Changed to whileInView
+                                        viewport={{ once: false }} // Allows bar to grow again on scroll
+                                        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                                     />
                                 </div>
                             </div>

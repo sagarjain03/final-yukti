@@ -17,7 +17,7 @@ export function TrustSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5, margin: "-50px" }} // Changed: once: false
                     transition={{ duration: 0.5 }}
                     className="text-center mb-12"
                 >
@@ -26,15 +26,15 @@ export function TrustSection() {
                         className="inline-block mb-6"
                         initial={{ scale: 0.8, opacity: 0 }}
                         whileInView={{ scale: 1, opacity: 1 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: false, amount: 0.5 }} // Changed: once: false
                         transition={{ duration: 0.5 }}
                     >
                         <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                             <motion.div
                                 initial={{ pathLength: 0 }}
                                 whileInView={{ pathLength: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: prefersReducedMotion ? 0 : 1, delay: 0.3 }}
+                                viewport={{ once: false }} // Changed: once: false
+                                transition={{ duration: prefersReducedMotion ? 0 : 1.5, delay: 0.2 }}
                             >
                                 <Shield className="w-10 h-10 text-primary" />
                             </motion.div>
@@ -53,7 +53,7 @@ export function TrustSection() {
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.3, margin: "-50px" }} // Changed: once: false
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0"
                 >
@@ -62,10 +62,10 @@ export function TrustSection() {
                             key={point.label}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: false }} // Changed: once: false
                             transition={{
                                 duration: prefersReducedMotion ? 0 : 0.4,
-                                delay: prefersReducedMotion ? 0 : 0.3 + index * 0.15,
+                                delay: prefersReducedMotion ? 0 : 0.1 + index * 0.15,
                             }}
                             className="flex items-center"
                         >
@@ -83,10 +83,10 @@ export function TrustSection() {
                                 <motion.div
                                     initial={{ opacity: 0, scaleX: 0 }}
                                     whileInView={{ opacity: 1, scaleX: 1 }}
-                                    viewport={{ once: true }}
+                                    viewport={{ once: false }} // Changed: once: false
                                     transition={{
                                         duration: prefersReducedMotion ? 0 : 0.3,
-                                        delay: prefersReducedMotion ? 0 : 0.5 + index * 0.15,
+                                        delay: prefersReducedMotion ? 0 : 0.3 + index * 0.15,
                                     }}
                                     className="hidden md:block w-16 h-px bg-gradient-to-r from-primary/50 to-primary mx-4 origin-left"
                                 />
@@ -99,8 +99,8 @@ export function TrustSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
+                    viewport={{ once: false, margin: "-50px" }} // Changed: once: false
+                    transition={{ duration: 0.5, delay: 0.4 }}
                     className="flex flex-wrap justify-center gap-4 mt-12"
                 >
                     {["Judge0 Sandbox", "Isolated Containers", "Fair Matchmaking"].map(

@@ -38,11 +38,17 @@ function AnimatedCounter({
 }) {
     const [count, setCount] = useState(0);
     const ref = useRef<HTMLSpanElement>(null);
-    const isInView = useInView(ref, { once: true });
+    // Changed: once: false ensures the hook updates every time it enters/leaves
+    const isInView = useInView(ref, { once: false, margin: "-20px" });
     const prefersReducedMotion = useReducedMotion();
 
     useEffect(() => {
-        if (!isInView) return;
+        // Reset count to 0 when element leaves viewport so it can animate again
+        if (!isInView) {
+            setCount(0);
+            return;
+        }
+
         if (prefersReducedMotion) {
             setCount(value);
             return;
@@ -89,7 +95,7 @@ export function MetricsSection() {
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5, margin: "-50px" }} // Changed: once: false
                     transition={{ duration: 0.5 }}
                     className="text-center text-3xl font-space font-bold text-foreground mb-4"
                 >
@@ -98,7 +104,7 @@ export function MetricsSection() {
                 <motion.p
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5, margin: "-50px" }} // Changed: once: false
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="text-center text-muted-foreground mb-16 max-w-md mx-auto"
                 >
@@ -111,7 +117,7 @@ export function MetricsSection() {
                             key={metric.label}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: false, amount: 0.2, margin: "-50px" }} // Changed: once: false
                             transition={{
                                 duration: prefersReducedMotion ? 0 : 0.5,
                                 delay: prefersReducedMotion ? 0 : index * 0.15,

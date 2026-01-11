@@ -35,7 +35,7 @@ export function HowItWorksSection() {
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5 }} // Changed: once: false
                     transition={{ duration: 0.5 }}
                     className="text-center text-3xl font-space font-bold text-foreground mb-4"
                 >
@@ -44,7 +44,7 @@ export function HowItWorksSection() {
                 <motion.p
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false, amount: 0.5 }} // Changed: once: false
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="text-center text-muted-foreground mb-16 max-w-md mx-auto"
                 >
@@ -60,9 +60,9 @@ export function HowItWorksSection() {
                         className="absolute left-8 md:left-1/2 top-0 w-px bg-gradient-to-b from-primary via-primary to-transparent md:-translate-x-1/2"
                         initial={{ height: 0 }}
                         whileInView={{ height: "100%" }}
-                        viewport={{ once: true }}
+                        viewport={{ once: false, amount: 0.2 }} // Changed: once: false
                         transition={{
-                            duration: prefersReducedMotion ? 0 : 2,
+                            duration: prefersReducedMotion ? 0 : 1.5, // Slightly faster for re-runs
                             ease: "easeOut"
                         }}
                     />
@@ -74,10 +74,11 @@ export function HowItWorksSection() {
                                 key={step.number}
                                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
+                                // Changed: once: false, and added margin so it resets earlier on scroll up
+                                viewport={{ once: false, amount: 0.4, margin: "-50px" }}
                                 transition={{
                                     duration: prefersReducedMotion ? 0 : 0.5,
-                                    delay: prefersReducedMotion ? 0 : index * 0.15,
+                                    delay: prefersReducedMotion ? 0 : index * 0.1, // Reduced delay slightly
                                 }}
                                 className={`relative flex items-start gap-6 md:gap-12 ${index % 2 === 0
                                         ? "md:flex-row"
