@@ -31,9 +31,9 @@ const privacyOptions = [
 ];
 
 const difficultyOptions = [
-    { value: "easy", label: "Easy", icon: Zap, color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/30" },
-    { value: "medium", label: "Medium", icon: Shield, color: "text-yellow-500", bg: "bg-yellow-500/10", border: "border-yellow-500/30" },
-    { value: "hard", label: "Hard", icon: Skull, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/30" }
+    { value: "easy", label: "Easy", icon: Zap, color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/30", ring: "ring-green-500/30" },
+    { value: "medium", label: "Medium", icon: Shield, color: "text-yellow-500", bg: "bg-yellow-500/10", border: "border-yellow-500/30", ring: "ring-yellow-500/30" },
+    { value: "hard", label: "Hard", icon: Skull, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/30", ring: "ring-red-500/30" }
 ];
 
 export function CreateArenaSheet({ isOpen, onClose, onCreate }: CreateArenaSheetProps) {
@@ -127,8 +127,8 @@ export function CreateArenaSheet({ isOpen, onClose, onCreate }: CreateArenaSheet
                                                     className={cn(
                                                         "relative p-4 rounded-lg border transition-all text-left",
                                                         isActive
-                                                            ? "border-primary bg-primary/10"
-                                                            : "border-border hover:border-primary/50 hover:bg-secondary/50"
+                                                            ? "border-primary bg-primary/10 shadow-sm ring-1 ring-primary opacity-100"
+                                                            : "border-border opacity-50 hover:opacity-100 hover:border-primary/50 hover:bg-secondary/50"
                                                     )}
                                                 >
                                                     <Icon className={cn("w-5 h-5 mb-2", isActive && "text-primary")} />
@@ -152,8 +152,8 @@ export function CreateArenaSheet({ isOpen, onClose, onCreate }: CreateArenaSheet
                                                     className={cn(
                                                         "flex-1 py-2 rounded-lg border font-medium transition-all",
                                                         formData.maxPlayers === num
-                                                            ? "border-primary bg-primary/10 text-primary"
-                                                            : "border-border hover:border-primary/50"
+                                                            ? "border-primary bg-primary/10 text-primary shadow-sm ring-1 ring-primary opacity-100"
+                                                            : "border-border opacity-50 hover:opacity-100 hover:border-primary/50"
                                                     )}
                                                 >
                                                     {num}
@@ -177,8 +177,8 @@ export function CreateArenaSheet({ isOpen, onClose, onCreate }: CreateArenaSheet
                                                     className={cn(
                                                         "flex items-center gap-3 p-3 rounded-lg border transition-all",
                                                         isActive
-                                                            ? "border-primary bg-primary/10"
-                                                            : "border-border hover:border-primary/50"
+                                                            ? "border-primary bg-primary/10 shadow-sm ring-1 ring-primary opacity-100"
+                                                            : "border-border opacity-50 hover:opacity-100 hover:border-primary/50"
                                                     )}
                                                 >
                                                     <Icon className={cn("w-4 h-4", isActive && "text-primary")} />
@@ -206,8 +206,8 @@ export function CreateArenaSheet({ isOpen, onClose, onCreate }: CreateArenaSheet
                                                     className={cn(
                                                         "flex-1 flex flex-col items-center gap-2 p-3 rounded-lg border transition-all",
                                                         isActive
-                                                            ? `${option.border} ${option.bg}`
-                                                            : "border-border hover:border-primary/50"
+                                                            ? `${option.border} ${option.bg} shadow-sm ring-1 ${option.ring} opacity-100`
+                                                            : "border-border opacity-50 hover:opacity-100 hover:border-primary/50"
                                                     )}
                                                 >
                                                     <Icon className={cn("w-5 h-5", isActive ? option.color : "text-muted-foreground")} />
